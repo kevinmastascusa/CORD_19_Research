@@ -261,15 +261,12 @@ def preprocess_data(df):
 # size by the WordsToKeep option.
 '''
 
-'''
-# 1. Choose the class attribute (Sentiment or Sentiment_Description)
-# 2. Choose subsets of feature attributes
-# 3. Choose pre-processing methods
-# 4. Choose different K for KNN
-# 5. Choose Naïvebayes or NaivebayesMultinomialText
-# 6. Choose different parameters, such as minNumObj, subtree raising, for the decision tree model, J48
-# 7. For different combinations of the above choices, run the model on the given data, compare the results, discuss the factors influencing the performance.
-# 8. Finally, choose the best model for the problem. If the Weka runs too long for a configuration, try to reduce the dictionary size by the WordsToKeep option.
+'''# 1. Choose the class attribute (Sentiment or Sentiment_Description) # 2. Choose subsets of feature attributes # 
+3. Choose pre-processing methods # 4. Choose different K for KNN # 5. Choose Naïvebayes or NaivebayesMultinomialText 
+# 6. Choose different parameters, such as minNumObj, subtree raising, for the decision tree model, J48 # 7. For 
+different combinations of the above choices, run the model on the given data, compare the results, discuss the 
+factors influencing the performance. # 8. Finally, choose the best model for the problem. If the Weka runs too long 
+for a configuration, try to reduce the dictionary size by the WordsToKeep option.
 
 '''
 

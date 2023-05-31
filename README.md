@@ -1,4 +1,5 @@
 # CORD_19_Research
+
 # Project Name: Data Mining
 
 ## Description
@@ -18,7 +19,8 @@ The CORD-19 dataset is a free resource of over 400,000 scholarly articles, both 
 ## Results
 
 
-
 ## Contact
+### Authors
+* [**Kevin Mastascusa**](  )
 
 **Note**: Please consult the latest and most authoritative health sources like the World Health Organization or the Centers for Disease Control and Prevention for current, scientifically-validated information about COVID-19.

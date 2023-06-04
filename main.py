@@ -3,38 +3,46 @@
 # determine if the paper is about COVID-19 or not. DATE: VERSION: 1.0 USAGE: python main.py
 # ================================================================================================================
 
-# Import the required libraries
-import math  # For mathematical operations
-import random  # For random number generation
-import os  # For file operations
-import pandas as pd  # For data manipulation and analysis
-import numpy as np  # For mathematical calculations
-import matplotlib.pyplot as plt  # For data visualization
-import seaborn as sns  # For data visualization
 import warnings  # To ignore any warnings
-import nltk  # Natural Language Toolkit
-import re  # For regular expressions
-import string  # For string operations
-from nltk.corpus import stopwords  # To identify and remove the stopwords
+import string  # To remove any punctuations
+import matplotlib.pyplot as plt  # For data visualization
+import numpy as np
+# Import the required libraries
+import pandas as pd  # For data manipulation and analysis
+import seaborn as sns  # For data visualization
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer  # To perform lemmatization
 from nltk.stem.porter import PorterStemmer  # To perform stemming
 from nltk.tokenize import word_tokenize  # To create tokens from text
-from nltk.stem import WordNetLemmatizer  # To perform lemmatization
-
-from sklearn.feature_extraction.text import CountVectorizer  # For feature extraction
-from sklearn.feature_extraction.text import TfidfVectorizer  # For feature extraction
-from sklearn.model_selection import train_test_split  # To split the data into train and test set
+from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.metrics import accuracy_score, confusion_matrix, \
-    classification_report  # To measure how well the model is performing
-from sklearn.neighbors import KNeighborsClassifier  # KNN classifier
+    classification_report, precision_recall_fscore_support, \
+    mean_squared_error, mean_absolute_error, r2_score, \
+    explained_variance_score  # To measure how well the model is performing
+from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB  # Naive Bayes classifier
-from sklearn.tree import DecisionTreeClassifier  # Decision Tree classifier
+from sklearn.neighbors import KNeighborsClassifier  # KNN classifier
+#import decision tree
+from sklearn.tree import DecisionTreeClassifier
+# import random forest
+from sklearn.ensemble import RandomForestClassifier
+# import svm
+from sklearn.svm import SVC
+# import logistic regression
+from sklearn.linear_model import LogisticRegression
+
 
 # nltk.download('punkt')  # punkt is a pre-trained model that helps you tokenize words and sentences
 # nltk.download('wordnet')  # wordnet is a lexical database for the English language
 # nltk.download('stopwords')  # stopwords are the words in any language which does not add much meaning to a sentence
 
-warnings.filterwarnings('ignore')
-import nltk
+
+# warnings.filterwarnings('ignore')
+# To ignore any warnings
+# stops = set(stopwords.words('english'))
+# To remove the stopwords
+# print(stops)
+# To print the stopwords
 
 
 # nltk.download()
@@ -251,30 +259,10 @@ def preprocess_data(df):
     return df
 
 
-'''
-#  You have: Data with a set of feature attributes and class attributes. Data pre-processing methods: 
-# Binary, TF, TFIDF, WordsToKeep Models: KNN, Naïve Bayes, Decision Tree Your experiment design should to: Choose the 
-# class attribute (Sentiment or Sentiment_Description) Choose subsets of feature attributes Choose pre-processing 
-# methods Choose different K for KNN Choose Naïvebayes or NaivebayesMultinomialText Choose different parameters, 
-# such as minNumObj, subtree raising, for the decision tree model, J48 For different combinations of the above choices, 
-# run the model on the given data, compare the results, discuss the factors influencing the performance. Finally, 
-# choose the best model for the problem. If the Weka runs too long for a configuration, try to reduce the dictionary 
-# size by the WordsToKeep option.
-'''
-
-'''# 1. Choose the class attribute (Sentiment or Sentiment_Description) # 2. Choose subsets of feature attributes # 
-3. Choose pre-processing methods # 4. Choose different K for KNN # 5. Choose Naïvebayes or NaivebayesMultinomialText 
-# 6. Choose different parameters, such as minNumObj, subtree raising, for the decision tree model, J48 # 7. For 
-different combinations of the above choices, run the model on the given data, compare the results, discuss the 
-factors influencing the performance. # 8. Finally, choose the best model for the problem. If the Weka runs too long 
-for a configuration, try to reduce the dictionary size by the WordsToKeep option.
-
-'''
-
 if __name__ == "__main__":
     print_hi('Kevin Mastascusa')
     # Load the data
-    df = pd.read_csv('metadata.csv')
+    df = pd.read_csv('metadata.csv', low_memory=False)
     # Print the structure of the data
     print(df.info())
     # Print the first 10 rows of the data
@@ -286,45 +274,10 @@ if __name__ == "__main__":
     # Print the number of unique values in each column
     print(df.nunique())
 
-    print(' ------------------------------------ ')
-    print(' ------------------------------------ ')
-
-'''
-    # Drop the columns that are not required
-
-    # df.drop(['cord_uid', 'sha', 'source_x', 'doi', 'pmcid', 'pubmed_id', 'license', 'abstract', 'publish_time',
-    #            'authors', 'journal', 'mag_id', 'who_covidence_id', 'arxiv_id', 'pdf_json_files', 'pmc_json_files',
-    #            'url', 's2_id'], axis=1, inplace=True)
-    # Print the first 10 rows of the data
-    # print(df.head(10))
-    # Print the number of missing values in each column
-    # print(df.isnull().sum())
-    # Print the number of unique values in each column
-    # print(df.nunique())
-
-    # Print the number of missing values in each column
-    # print(df.isnull().sum1())
-
-'''
-
-"""Note: for the assignment done by a group, the group submits a single report by anyone of the group members. If 
-multiple inconsistent reports are submitted,  the submitter receives the grade based on his/her own submission. The 
-goal of the project is to systematically evaluate different combinations of data pre-processing methods and 
-classification models for sentiment analysis on self-selected data. Your project should start with a design of the 
-experiments. You have: Data with a set of feature attributes and class attributes. Data pre-processing methods: 
-Binary, TF, TFIDF, WordsToKeep Models: KNN, Naïve Bayes, Decision Tree Your experiment design should to: Choose the 
-class attribute (Sentiment or Sentiment_Description) Choose subsets of feature attributes Choose pre-processing 
-methods Choose different K for KNN Choose Naïvebayes or NaivebayesMultinomialText Choose different parameters, 
-such as minNumObj, subtree raising, for the decision tree model, J48 For different combinations of the above choices, 
-run the model on the given data, compare the results, discuss the factors influencing the performance. Finally, 
-choose the best model for the problem. If the Weka runs too long for a configuration, try to reduce the dictionary 
-size by the WordsToKeep option.
-
-
-"""
-# CORD19 ABSTRACT DATASET CLEANING AND PREPROCESSING
-# Clean the data
-# Drop the columns that are not required
+print('=' * 500)
+print('Data Preprocessing')
+print('=' * 500)
+# Preprocess the data
 print('Drop the columns that are not required:')
 df.drop(['cord_uid', 'sha', 'source_x', 'doi', 'pmcid', 'pubmed_id', 'license', 'abstract', 'publish_time', 'authors',
          'journal', 'mag_id', 'who_covidence_id', 'arxiv_id', 'pdf_json_files', 'pmc_json_files', 'url', 's2_id'],
@@ -353,13 +306,6 @@ print(df.isnull().sum())
 # Print the number of unique values in each column
 print('Number of unique values in each column:')
 print(df.nunique())
-# # Print the class distribution
-# print('Class distribution:')
-# print(df['source'].value_counts())
-# # Plot the class distribution
-# print('Class distribution plot:')
-# sns.countplot(df['source'])
-# plt.show()
 
 print("MARKER 1")
 print(' ------------------------------------ ')
@@ -386,17 +332,6 @@ sns.countplot(df['target'])
 plt.show()
 print(' ------------------------------------ ')
 print(' ------------------------------------ ')
-# # Print the first 5 rows of the data
-# print(df.head())
-# # Print the number of missing values in each column
-# print(df.isnull().sum())
-# # Print the number of unique values in each column
-# print(df.nunique())
-# # Print the class distribution
-# print(df['target'].value_counts())
-# # Plot the class distribution
-# sns.countplot(df['target'])
-# plt.show()
 
 print("MARKER 2")
 print(' ------------------------------------ ')
@@ -428,29 +363,12 @@ print('Print the first column of the numpy array:')
 print(numpy_array[:, 0])
 print('Print the second column of the numpy array:')
 print(numpy_array[:, 1])
-# print(numpy_array[:, 2])
-# print('Print the fourth column of the numpy array:')
-# print(numpy_array[:, 3])
-# print('Print the fifth column of the numpy array:')
-# print(numpy_array[:, 4])
 
 print('Print the first row and first column of the numpy array:')
 print(numpy_array[0][0])
 
 print('Print the first row and second column of the numpy array:')
 print(numpy_array[0][1])
-
-# print('Print the first row and third column of the numpy array:')
-# print(numpy_array[0][2])
-#
-# print('Print the first row and fourth column of the numpy array:')
-# print(numpy_array[0][3])
-#
-# print('Print the first row and fifth column of the numpy array:')
-# print(numpy_array[0][4])
-#
-# print('Print the first row and sixth column of the numpy array:')
-# print(numpy_array[0][5])
 
 # Export as csv file
 print('Export as csv file:')
@@ -460,22 +378,7 @@ print(var)
 
 print(' ------------------------------------ ')
 print(' ------------------------------------ ')
-import nltk
-# [nltk_data] Error loading stopwords: <urlopen error [SSL:
-# [nltk_data]     CERTIFICATE_VERIFY_FAILED] certificate verify failed:
-# [nltk_data]     unable to get local issuer certificate (_ssl.c:997)>
 
-import string
-
-# from nltk.corpus import stopwords
-# from nltk.tokenize import word_tokenize
-# from nltk.stem import PorterStemmer
-# from nltk.stem import WordNetLemmatizer
-
-# Download the stopwords
-print('Download the stopwords:')
-
-# nltk.download('stopwords')
 print('text cleaning:')
 # Convert to lower case
 print('Convert to lower case:')
@@ -490,16 +393,16 @@ df['title'] = df['title'].apply(lambda x: x.translate(str.maketrans('', '', stri
 print('Remove whitespaces:')
 df['title'] = df['title'].apply(lambda x: x.strip())
 # Remove stopwords
-# print('Remove stopwords:')
-# stop_words = set(stopwords.words('english'))
-# df['title'] = df['title'].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
+print('Remove stopwords:')
+stop_words = set(stopwords.words('english'))
+df['title'] = df['title'].apply(lambda x: ' '.join([word for word in x.split() if word not in stop_words]))
 # Remove short words
-# print('Remove short words:')
-# df['title'] = df['title'].apply(lambda x: ' '.join([word for word in x.split() if len(word) > 3]))
+print('Remove short words:')
+df['title'] = df['title'].apply(lambda x: ' '.join([word for word in x.split() if len(word) > 3]))
 # Lemmatization
-# print('Lemmatization:')
-# lemmatizer = WordNetLemmatizer()
-# df['title'] = df['title'].apply(lambda x: ' '.join([lemmatizer.lemmatize(word) for word in x.split()]))
+print('Lemmatization:')
+lemmatizer = WordNetLemmatizer()
+df['title'] = df['title'].apply(lambda x: ' '.join([lemmatizer.lemmatize(word) for word in x.split()]))
 # Print the first 5 rows of the data
 print('Print the first 5 rows of the data:')
 print(df.head())
@@ -510,18 +413,423 @@ print(df.isnull().sum())
 # Print the number of unique values in each column
 print('Number of unique values in each column:')
 print(df.nunique())
-# Print the class distribution
-print('Class distribution:')
-print(df['target'].value_counts())
-# Plot the class distribution
-print('Class distribution plot:')
-sns.countplot(df['target'])
-plt.show()
+
+print(' ------------------------------------ ')
+
+# TF
+print('TF Text Vectorizer:')
+tf_binary_vectorizer = CountVectorizer(binary=True,
+                                       max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# binary=True to get binary outputs (0 or 1) instead of counts (1, 2, 3, etc.)
+# Fit the vectorizer
+tf_binary_vectorizer.fit(df['title'])
+X = tf_binary_vectorizer.transform(df['title'])
+print('Print the shape of the TF Binary vectorizer:')
+print(X.shape)
+print('Print the type of the TF Binary vectorizer:')
+print(type(X))
+print('Print the TF Binary vectorizer:')
+print(X)
+print('Print the TF Binary vectorizer to array:')
+print(X.toarray())
+print('Print the TF Binary vectorizer to array shape:')
+print(X.toarray().shape)
+print('Print the TF Binary vectorizer to array type:')
+print(type(X.toarray()))
+print('Print the TF Binary vectorizer to array first row:')
+print(X.toarray()[0])
+print('Print the TF Binary vectorizer to array first row shape:')
+print(X.toarray()[0].shape)
+print('Print the TF Binary vectorizer to array first row type:')
+print(type(X.toarray()[0]))
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(df['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+print('Print the type of the TF-IDF vectorizer:')  # The type is sparse matrix
+print(type(X))
+print('Print the TF-IDF vectorizer:')  # The vectorizer contains the TF-IDF values for each word in each document
+print(X)
+print('Print the TF-IDF vectorizer to array:')  # The array contains the TF-IDF values for each word in each document
+print(X.toarray())
+print('Print the TF-IDF vectorizer to array shape:')  # The shape is (number of documents, number of features)
+print(X.toarray().shape)
+print('Print the TF-IDF vectorizer to array type:')  # The type is numpy array
+print(type(X.toarray()))
+print('Print the TF-IDF vectorizer to array first row:')  # The first row is the first document
+print(X.toarray()[0])
+print('Print the TF-IDF vectorizer to array first row shape:')  # The shape is (number of features,)
+print(X.toarray()[0].shape)
 
 print(' ------------------------------------ ')
 print(' ------------------------------------ ')
 print(' ------------------------------------ ')
 
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+X_train, X_test, y_train, y_test = train_test_split(X, df['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+print('Print the shape of the testing set:')
+print(X_test.shape)
+print('Print the shape of the training labels:')
+print(y_train.shape)
+print('Print the shape of the testing labels:')
+print(y_test.shape)
+
+# Train the model
+print('Train the model:')
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total
+# observations
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+
+print(' ------------------------------------ ')
+
+# KNN Classifier
+
+print('KNN Classifier:')
+print('=' * 50)
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+print('Print the shape of the sample:')
+print(df_sample.shape)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+print('Print the type of the TF-IDF vectorizer:')  # The type is sparse matrix
+print(type(X))
+print('Print the TF-IDF vectorizer:')  # The vectorizer contains the TF-IDF values for each word in each document
+print(X)
+print('Print the TF-IDF vectorizer to array:')  # The array contains the TF-IDF values for each word in each document
+print(X.toarray())
+print('Print the TF-IDF vectorizer to array shape:')  # The shape is (number of documents, number of features)
+print(X.toarray().shape)
+print('Print the TF-IDF vectorizer to array type:')  # The type is numpy array
+print(type(X.toarray()))
+print('Print the TF-IDF vectorizer to array first row:')  # The first row is the first document
+print(X.toarray()[0])
+print('Print the TF-IDF vectorizer to array first row shape:')  # The shape is (number of features,)
+print(X.toarray()[0].shape)
+
+print(' ------------------------------------ ')
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+print('Print the shape of the testing set:')
+print(X_test.shape)
+print('Print the shape of the training labels:')
+print(y_train.shape)
+print('Print the shape of the testing labels:')
+print(y_test.shape)
+
+# Train the model
+print('Train the model:')
+model = KNeighborsClassifier(n_neighbors=5)
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+print(' ------------------------------------ ')
+
+# Naive Bayes Classifier
+
+print('Naive Bayes Classifier:')
+print('=' * 50)
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+print('Print the shape of the sample:')
+print(df_sample.shape)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+print('Print the type of the TF-IDF vectorizer:')  # The type is sparse matrix
+print(type(X))
+print('Print the TF-IDF vectorizer:')  # The vectorizer contains the TF-IDF values for each word in each document
+print(X)
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+print('Print the shape of the testing set:')
+print(X_test.shape)
+print('Print the shape of the training labels:')
+print(y_train.shape)
+print('Print the shape of the testing labels:')
+print(y_test.shape)
+
+# Train the model
+print('Train the model:')
+model = MultinomialNB()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+
+print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+print(' ------------------------------------ ')
+
+# Decision Tree Classifier
+
+print('Decision Tree Classifier:')
+print('=' * 50)
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+print('Print the type of the TF-IDF vectorizer:')  # The type is sparse matrix
+print(type(X))
+print('Print the TF-IDF vectorizer:')  # The vectorizer contains the TF-IDF values for each word in each document
+print(X)
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+
+print('Print the shape of the testing set:')
+print(X_test.shape)
+
+print('Print the shape of the training labels:')
+print(y_train.shape)
+
+print('Print the shape of the testing labels:')
+print(y_test.shape)
+
+# Train the model
+print('Train the model:')
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+
+# Predict the labels
+print('Predict the labels:')
+
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+
+print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+# Random Forest Classifier
+
+print('Random Forest Classifier:')
+print('=' * 50)
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+print('Print the type of the TF-IDF vectorizer:')  # The type is sparse matrix
+print(type(X))
+print('Print the TF-IDF vectorizer:')  # The vectorizer contains the TF-IDF values for each word in each document
+print(X)
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+
+print('Print the shape of the testing set:')
+print(X_test.shape)
+
+print('Print the shape of the training labels:')
+print(y_train.shape)
+
+print('Print the shape of the testing labels:')
+print(y_test.shape)
+
+# Train the model
+print('Train the model:')
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+
+print('Accuracy:')
+print(accuracy_score(y_test,
+                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+
+print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
 
 
 '''
@@ -535,27 +843,4 @@ The dataset is a collection of research papers related to COVID-19, SARS-CoV-2, 
 The dataset contains the following columns:
 cord_uid, sha, source_x, title, doi, pmcid, pubmed_id, license, abstract, publish_time, authors, journal,
 mag_id, who_covidence_id, arxiv_id, pdf_json_files, pmc_json_files, url, s2_id
-
-
-The dataset is preprocessed in the following way:
-1. The dataset is read using pandas.
-2. The dataset is converted to numpy array.
-3. The dataset is converted to lower case.
-4. The punctuation is removed.
-5. The numbers are removed.
-6. The whitespaces are removed.
-7. The stopwords are removed.
-8. The short words are removed.
-9. The lemmatization is performed.
-10. The dataset is exported as csv file.
-11. The first 5 rows of the dataset are printed.
-12. The number of missing values in each column is printed.
-13. The number of unique values in each column is printed.
-14. The class distribution is printed.
-15. The class distribution plot is printed
-
-
-
-
-
 '''

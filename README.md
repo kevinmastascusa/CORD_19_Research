@@ -53,10 +53,9 @@ This project uses the following license: [???]()
 ## Contact
 ### Author
 * Name: Kevin Mastascusa
-* Email:
-* LinkedIn: 
-* Github:
-* Website:
+* Who I am: I am a student at Drexel University studying Data Science and Artificial Intelligence.
+* LinkedIn: https://www.linkedin.com/in/kevinmastascusa/
+* Github: https://github.com/kevinmastascusa
 
 
 **Note**: Please consult the latest and most authoritative health sources like the World Health Organization or the Centers for Disease Control and Prevention for current, scientifically-validated information about COVID-19.

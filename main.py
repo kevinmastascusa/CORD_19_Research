@@ -21,7 +21,7 @@ from sklearn.metrics import accuracy_score, confusion_matrix, \
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import MultinomialNB  # Naive Bayes classifier
 from sklearn.neighbors import KNeighborsClassifier  # KNN classifier
-#import decision tree
+# import decision tree
 from sklearn.tree import DecisionTreeClassifier
 # import random forest
 from sklearn.ensemble import RandomForestClassifier
@@ -647,11 +647,12 @@ print(y_pred_binary)
 print('Evaluate the model:')
 print('Accuracy:')
 print(accuracy_score(y_test,
-                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
 
-print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
 print(precision_recall_fscore_support(y_test, y_pred_binary,
-                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
 
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
@@ -714,7 +715,6 @@ print('Train the model:')
 model = DecisionTreeClassifier()
 model.fit(X_train, y_train)
 
-
 # Predict the labels
 print('Predict the labels:')
 
@@ -726,11 +726,12 @@ print(y_pred_binary)
 print('Evaluate the model:')
 print('Accuracy:')
 print(accuracy_score(y_test,
-                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
 
-print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
 print(precision_recall_fscore_support(y_test, y_pred_binary,
-                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
 
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
@@ -804,11 +805,12 @@ print('Evaluate the model:')
 
 print('Accuracy:')
 print(accuracy_score(y_test,
-                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
 
-print('Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
 print(precision_recall_fscore_support(y_test, y_pred_binary,
-                                        average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
 
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
@@ -823,16 +825,15 @@ print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 
-
-
-
-
+# Save classification report to csv file
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_report.csv', index=False)
 
 print(' ------------------------------------ ')
 
 print(' ------------------------------------ ')
-
-
 
 '''
 READ ME

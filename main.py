@@ -600,7 +600,7 @@ df_report.to_csv('classification_reportKNNClassifier5N.csv', index=False)
 # Save confusion matrix to csv file
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
-df_confusion_matrix.to_csv('confusion_matrixKNNClassifier5N', index=False)
+df_confusion_matrix.to_csv('confusion_matrixKNNClassifier5N.csv', index=False)
 
 print(' ------------------------------------ ')
 

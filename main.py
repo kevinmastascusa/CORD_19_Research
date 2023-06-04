@@ -3,7 +3,6 @@
 # determine if the paper is about COVID-19 or not. DATE: VERSION: 1.0 USAGE: python main.py
 # ================================================================================================================
 
-import warnings  # To ignore any warnings
 import string  # To remove any punctuations
 import matplotlib.pyplot as plt  # For data visualization
 import numpy as np
@@ -26,10 +25,6 @@ from sklearn.neighbors import KNeighborsClassifier  # KNN classifier
 from sklearn.tree import DecisionTreeClassifier
 # import random forest
 from sklearn.ensemble import RandomForestClassifier
-# import svm
-from sklearn.svm import SVC
-# import logistic regression
-from sklearn.linear_model import LogisticRegression
 
 
 # nltk.download('punkt')  # punkt is a pre-trained model that helps you tokenize words and sentences
@@ -827,9 +822,16 @@ print('r2_score:')
 print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
+
+
+
+
+
+
 print(' ------------------------------------ ')
 
 print(' ------------------------------------ ')
+
 
 
 '''

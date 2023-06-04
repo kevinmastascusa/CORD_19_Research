@@ -591,6 +591,17 @@ print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 
+# Save classification report to csv file
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportKNNClassifier5N.csv', index=False)
+
+# Save confusion matrix to csv file
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixKNNClassifier5N', index=False)
+
 print(' ------------------------------------ ')
 
 # Naive Bayes Classifier
@@ -669,6 +680,17 @@ print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 print(' ------------------------------------ ')
 
+# Save classification report to csv file
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportNaiveBayesClassifier.csv', index=False)
+
+# Save confusion matrix to csv file
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixNaiveBayesClassifier.csv', index=False)
+
 # Decision Tree Classifier
 
 print('Decision Tree Classifier:')
@@ -745,6 +767,17 @@ print('r2_score:')
 print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportDecisionTreeClassifier.csv', index=False)
+
+# Save confusion matrix to csv file
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixDecisionTreeClassifier.csv', index=False)
 print(' ------------------------------------ ')
 
 print(' ------------------------------------ ')
@@ -830,6 +863,11 @@ print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 df_report.to_csv('classification_report.csv', index=False)
+
+# Save confusion matrix to csv file
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrix.csv', index=False)
 
 print(' ------------------------------------ ')
 

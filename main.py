@@ -398,6 +398,14 @@ df['title'] = df['title'].apply(lambda x: ' '.join([word for word in x.split() i
 print('Lemmatization:')
 lemmatizer = WordNetLemmatizer()
 df['title'] = df['title'].apply(lambda x: ' '.join([lemmatizer.lemmatize(word) for word in x.split()]))
+
+
+# TF-IDF Text Vectorizer
+print('TF-IDF Text Vectorizer:')
+tfidf_vectorizer = TfidfVectorizer(max_features=1000)
+tfidf_vectorizer.fit(df['title'])
+X = tfidf_vectorizer.transform(df['title'])
+
 # Print the first 5 rows of the data
 print('Print the first 5 rows of the data:')
 print(df.head())
@@ -408,6 +416,14 @@ print(df.isnull().sum())
 # Print the number of unique values in each column
 print('Number of unique values in each column:')
 print(df.nunique())
+# Export as csv file |W|
+print('Export as csv file:')
+print('...')
+
+save_path = 'CORD19_abstract_cleaned.csv'
+df.to_csv(save_path, index=False)
+var = open(save_path, 'r', encoding='utf-8').readlines()[:5]
+print(var)
 
 print(' ------------------------------------ ')
 
@@ -438,6 +454,61 @@ print(X.toarray()[0].shape)
 print('Print the TF Binary vectorizer to array first row type:')
 print(type(X.toarray()[0]))
 
+#export as csv file
+print('Export as csv file:')
+#X to df
+df = pd.DataFrame(X.toarray(), columns=tf_binary_vectorizer.get_feature_names())
+print('Print the first 5 rows of the data:')
+print(df.head())
+#export as csv file
+print('Export as csv file:')
+df.to_csv('TF.csv', index=False)
+
+print(' ------------------------------------ ')
+
+# TF-IDF
+print('TF-IDF Text Vectorizer:')
+
+#load the dataset
+print('Load the dataset:')
+df = pd.read_csv('CORD19_abstract_cleaned.csv')
+print('Print the first 5 rows of the data:')
+print(df.head())
+
+
+# load the dataset
+# print('Load the dataset:')
+# df = pd.read_csv('CORD19_abstract_cleaned.csv')
+# print('Print the first 5 rows of the data:')
+# print(df.head())
+
+
+# #TF without binary
+# print('TF Text Vectorizer without binary:')
+# tf_vectorizer = CountVectorizer(max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# # Fit the vectorizer
+# tf_vectorizer.fit(df['title'])
+# X = tf_vectorizer.transform(df['title'])
+# print('Print the shape of the TF vectorizer:')
+# print(X.shape)
+# print('Print the type of the TF vectorizer:')
+# print(type(X))
+# print('Print the TF vectorizer:')
+# print(X)
+
+# #export as csv file
+# print('Export as csv file:')
+# df.to_csv('TF.csv', index=False)
+#
+# # load the dataset
+# print('Load the dataset:')
+# df = pd.read_csv('CORD19_abstract_cleaned.csv')
+# print('Print the first 5 rows of the data:')
+# print(df.head())
+
+# Replace missing values with empty strings
+df['title'] = df['title'].fillna('')
+
 # TF-IDF
 print(
     'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
@@ -463,6 +534,8 @@ print('Print the TF-IDF vectorizer to array first row:')  # The first row is the
 print(X.toarray()[0])
 print('Print the TF-IDF vectorizer to array first row shape:')  # The shape is (number of features,)
 print(X.toarray()[0].shape)
+
+
 
 print(' ------------------------------------ ')
 print(' ------------------------------------ ')
@@ -504,9 +577,25 @@ print(precision_recall_fscore_support(y_test, y_pred_binary,
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
 
+#export as csv file
+print('Export as csv file:')
+#X to df
+df = pd.DataFrame(X.toarray(), columns=tfidf_vectorizer.get_feature_names())
+print('Print the first 5 rows of the data:')
+print(df.head())
+#export as csv file
+print('Export as csv file:')
+df.to_csv('TFIDF.csv', index=False)
 print(' ------------------------------------ ')
 
 # KNN Classifier
+
+#load the dataset
+print('Load the dataset:')
+df = pd.read_csv('CORD19_abstract_cleaned.csv')
+print('Print the first 5 rows of the data:')
+print(df.head())
+
 
 print('KNN Classifier:')
 print('=' * 50)
@@ -591,16 +680,196 @@ print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 
-# Save classification report to csv file
+# Save classification report to csv file |W|
 print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 df_report.to_csv('classification_reportKNNClassifier5N.csv', index=False)
 
-# Save confusion matrix to csv file
+#print update prompt
+print('Save classification report to csv file: Done')
+
+# Save confusion matrix to csv file |W|
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
 df_confusion_matrix.to_csv('confusion_matrixKNNClassifier5N.csv', index=False)
+
+#print update prompt
+print('Save confusion matrix to csv file: Done')
+
+# KNN Classifier with 10 neighbors
+print('KNN Classifier with 10 neighbors:')
+print('=' * 50)
+#load the dataset
+print('Load the dataset:')
+df = pd.read_csv('CORD19_abstract_cleaned.csv')
+print('Print the first 5 rows of the data:')
+print(df.head())
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+print('Print the shape of the sample:')
+print(df_sample.shape)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+print('Print the shape of the testing set:')
+print(X_test.shape)
+
+# Train the model
+print('Train the model:')
+model = KNeighborsClassifier(n_neighbors=10)
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                            average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportKNNClassifier10N.csv', index=False)
+
+#print update prompt
+print('Save classification report to csv file: Done')
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixKNNClassifier10N.csv', index=False)
+
+
+print('Save confusion matrix to csv file: Done')
+
+# KNN Classifier with 15 neighbors
+print('KNN Classifier with 15 neighbors:')
+print('=' * 50)
+#load the dataset
+print('Load the dataset:')
+df = pd.read_csv('CORD19_abstract_cleaned.csv')
+print('Print the first 5 rows of the data:')
+print(df.head())
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+print('Print the shape of the sample:')
+print(df_sample.shape)
+
+# TF-IDF
+print(
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+tfidf_vectorizer = TfidfVectorizer(
+    max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
+# Fit the vectorizer
+tfidf_vectorizer.fit(
+    df_sample['title'])  # The vectorizer learns the vocabulary from the data and assigns an index to each word
+X = tfidf_vectorizer.transform(
+    df_sample['title'])  # The vectorizer contains the TF-IDF values for each word in each document
+print('Print the shape of the TF-IDF vectorizer:')  # The shape is (number of documents, number of features)
+print(X.shape)
+
+# Split the data into training and testing sets
+print('Split the data into training and testing sets:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+print('Print the shape of the training set:')
+print(X_train.shape)
+print('Print the shape of the testing set:')
+print(X_test.shape)
+
+# Train the model
+print('Train the model:')
+model = KNeighborsClassifier(n_neighbors=15)
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test,
+                        y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+
+print(
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+print(precision_recall_fscore_support(y_test, y_pred_binary,
+                                            average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+
+print('Confusion Matrix:')  #
+print(confusion_matrix(y_test, y_pred_binary))
+print('classification_report:')
+print(classification_report(y_test, y_pred_binary))
+print('mean_squared_error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('mean_absolute_error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('r2_score:')
+print(r2_score(y_test, y_pred_binary))
+print('explained_variance_score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportKNNClassifier15N.csv', index=False)
+
+#print update prompt
+print('Save classification report to csv file: Done')
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixKNNClassifier15N.csv', index=False)
+
+
+print('Save confusion matrix to csv file: Done')
 
 print(' ------------------------------------ ')
 
@@ -680,13 +949,13 @@ print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 print(' ------------------------------------ ')
 
-# Save classification report to csv file
+# Save classification report to csv file |W|
 print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 df_report.to_csv('classification_reportNaiveBayesClassifier.csv', index=False)
 
-# Save confusion matrix to csv file
+# Save confusion matrix to csv file |W|
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
 df_confusion_matrix.to_csv('confusion_matrixNaiveBayesClassifier.csv', index=False)
@@ -748,12 +1017,15 @@ print(y_pred_binary)
 print('Evaluate the model:')
 print('Accuracy:')
 print(accuracy_score(y_test,
-                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total
+# observations
 
 print(
-    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the
+# total predicted positive observations
 print(precision_recall_fscore_support(y_test, y_pred_binary,
-                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+                                      average='macro'))  # average='macro' to get the average of the precision,
+# recall, and F1-score of the two classes
 
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
@@ -768,13 +1040,13 @@ print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 
-# Save classification report to csv file
+# Save classification report to csv file |W|
 print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 df_report.to_csv('classification_reportDecisionTreeClassifier.csv', index=False)
 
-# Save confusion matrix to csv file
+# Save confusion matrix to csv file |W|
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
 df_confusion_matrix.to_csv('confusion_matrixDecisionTreeClassifier.csv', index=False)
@@ -792,7 +1064,8 @@ df_sample = df.sample(n=1000, random_state=42)
 
 # TF-IDF
 print(
-    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a measure of how important a word is in a document
+    'TF-IDF Text Vectorizer:')  # TF-IDF is a combination of TF and IDF (Inverse Document Frequency) which is a
+# measure of how important a word is in a document
 tfidf_vectorizer = TfidfVectorizer(
     max_features=1000)  # max_features=1000 to limit the number of features (vocabulary) to 1000
 # Fit the vectorizer
@@ -838,12 +1111,15 @@ print('Evaluate the model:')
 
 print('Accuracy:')
 print(accuracy_score(y_test,
-                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total observations
+                     y_pred_binary))  # Accuracy is the ratio of correctly predicted observations to the total
+# observations
 
 print(
-    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the total predicted positive observations
+    'Precision, Recall, F1-Score:')  # Precision is the ratio of correctly predicted positive observations to the
+# total predicted positive observations
 print(precision_recall_fscore_support(y_test, y_pred_binary,
-                                      average='macro'))  # average='macro' to get the average of the precision, recall, and F1-score of the two classes
+                                      average='macro'))  # average='macro' to get the average of the precision,
+# recall, and F1-score of the two classes
 
 print('Confusion Matrix:')  #
 print(confusion_matrix(y_test, y_pred_binary))
@@ -858,18 +1134,131 @@ print(r2_score(y_test, y_pred_binary))
 print('explained_variance_score:')
 print(explained_variance_score(y_test, y_pred_binary))
 
-# Save classification report to csv file
+#Symbol Key
+# Write Symbol = |W| to indicate something is being exported from the program to the outside world
+# Save classification report to csv file |W|
 print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
 df_report.to_csv('classification_report.csv', index=False)
 
-# Save confusion matrix to csv file
+# Save confusion matrix to csv file |W|
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
 df_confusion_matrix.to_csv('confusion_matrix.csv', index=False)
 
 print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+from nltk.sentiment import SentimentIntensityAnalyzer
+
+sia = SentimentIntensityAnalyzer()
+
+
+def get_sentiment(text):
+    sentiment = sia.polarity_scores(text)
+    return sentiment['compound']  # return the compound score
+
+
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+# Load cleaned dataset
+print('Load cleaned dataset:')
+df = pd.read_csv('CORD19_abstract_cleaned.csv')
+
+# print the first 5 rows of the dataframe
+print('Print the first 5 rows of the dataframe:')
+print(df.head())
+
+# add a new column to the dataframe
+print('Add a new column to the dataframe:')
+df['title'] = df['title'].fillna('')
+df['sentiment'] = df['title'].apply(get_sentiment)
+
+# print the first 5 rows of the dataframe
+print('Print the first 5 rows of the dataframe:')
+print(df.head())
+
+# save the dataframe to csv file |W|
+print('Save the dataframe to csv file:')
+df.to_csv('sentiments.csv', index=False)
+
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+import numpy as np
+
+# Load sentiments dataset
+print('Load sentiments dataset:')
+df = pd.read_csv('sentiments.csv')
+
+# Sentiment Analysis
+print('Sentiment Analysis:')
+print('=' * 50)
+
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF
+print('TF Text Vectorizer:')
+tf_vectorizer = CountVectorizer(max_features=1000)
+tf_vectorizer.fit(df_sample['title'])
+X_text = tf_vectorizer.transform(df_sample['title'])
+
+# Include the sentiment scores
+print('Including the sentiment scores:')
+X_sentiment = df_sample['sentiment'].values.reshape(-1, 1)
+X = np.concatenate((X_text.toarray(), X_sentiment), axis=1)
+
+# Prepare data for sentiment analysis
+print('Prepare data for sentiment analysis:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+
+# Train the model
+print('Train the model:')
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test, y_pred_binary))
+print('Precision, Recall, F1-Score:')
+print(precision_recall_fscore_support(y_test, y_pred_binary, average='macro'))
+print('Confusion Matrix:')
+print(confusion_matrix(y_test, y_pred_binary))
+print('Classification Report:')
+print(classification_report(y_test, y_pred_binary))
+print('Mean Squared Error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('Mean Absolute Error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('R2 Score:')
+print(r2_score(y_test, y_pred_binary))
+print('Explained Variance Score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('classification_reportSent.csv', index=False)
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrixSent.csv', index=False)
 
 print(' ------------------------------------ ')
 
@@ -884,4 +1273,6 @@ The dataset is a collection of research papers related to COVID-19, SARS-CoV-2, 
 The dataset contains the following columns:
 cord_uid, sha, source_x, title, doi, pmcid, pubmed_id, license, abstract, publish_time, authors, journal,
 mag_id, who_covidence_id, arxiv_id, pdf_json_files, pmc_json_files, url, s2_id
+
+
 '''

@@ -1140,12 +1140,12 @@ print(explained_variance_score(y_test, y_pred_binary))
 print('Save classification report to csv file:')
 report = classification_report(y_test, y_pred_binary, output_dict=True)
 df_report = pd.DataFrame(report).transpose()
-df_report.to_csv('classification_report.csv', index=False)
+df_report.to_csv('classification_reportRF.csv', index=False)
 
 # Save confusion matrix to csv file |W|
 print('Save confusion matrix to csv file:')
 df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
-df_confusion_matrix.to_csv('confusion_matrix.csv', index=False)
+df_confusion_matrix.to_csv('confusion_matrixRF.csv', index=False)
 
 print(' ------------------------------------ ')
 
@@ -1261,6 +1261,232 @@ df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
 df_confusion_matrix.to_csv('confusion_matrixSent.csv', index=False)
 
 print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+#Decision Tree With Sentiment Analysis TD-IDF
+
+# Load sentiments dataset
+
+print('Load sentiments dataset:')
+df = pd.read_csv('sentiments.csv')
+
+# Sentiment Analysis
+print('Sentiment Analysis:')
+
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF-IDF
+print('TF-IDF Text Vectorizer:')
+tfidf_vectorizer = TfidfVectorizer(max_features=1000)
+tfidf_vectorizer.fit(df_sample['title'])
+X_text = tfidf_vectorizer.transform(df_sample['title'])
+
+# Include the sentiment scores
+print('Including the sentiment scores:')
+X_sentiment = df_sample['sentiment'].values.reshape(-1, 1)
+X = np.concatenate((X_text.toarray(), X_sentiment), axis=1)
+
+# Prepare data for sentiment analysis
+print('Prepare data for sentiment analysis:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+
+# Train the model
+print('Train the model:')
+model = DecisionTreeClassifier()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test, y_pred_binary))
+print('Precision, Recall, F1-Score:')
+print(precision_recall_fscore_support(y_test, y_pred_binary, average='macro'))
+print('Confusion Matrix:')
+print(confusion_matrix(y_test, y_pred_binary))
+print('Classification Report:')
+print(classification_report(y_test, y_pred_binary))
+print('Mean Squared Error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('Mean Absolute Error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('R2 Score:')
+print(r2_score(y_test, y_pred_binary))
+print('Explained Variance Score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('class_report_TFIDF_DT_SENT.csv', index=False)
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrix_TFIDF_DT_SENT.csv', index=False)
+
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+# Random Forest With Sentiment Analysis TD-IDF
+
+# Load sentiments dataset
+
+print('Load sentiments dataset:')
+df = pd.read_csv('sentiments.csv')
+
+# Sentiment Analysis
+print('Sentiment Analysis:')
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF-IDF
+print('TF-IDF Text Vectorizer:')
+tfidf_vectorizer = TfidfVectorizer(max_features=1000)
+
+tfidf_vectorizer.fit(df_sample['title'])
+X_text = tfidf_vectorizer.transform(df_sample['title'])
+
+# Include the sentiment scores
+print('Including the sentiment scores:')
+X_sentiment = df_sample['sentiment'].values.reshape(-1, 1)
+X = np.concatenate((X_text.toarray(), X_sentiment), axis=1)
+
+# Prepare data for sentiment analysis
+print('Prepare data for sentiment analysis:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+
+# Train the model
+print('Train the model:')
+model = RandomForestClassifier()
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test, y_pred_binary))
+print('Precision, Recall, F1-Score:')
+print(precision_recall_fscore_support(y_test, y_pred_binary, average='macro'))
+print('Confusion Matrix:')
+print(confusion_matrix(y_test, y_pred_binary))
+print('Classification Report:')
+print(classification_report(y_test, y_pred_binary))
+print('Mean Squared Error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('Mean Absolute Error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('R2 Score:')
+print(r2_score(y_test, y_pred_binary))
+print('Explained Variance Score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('class_report_TFIDF_RF_SENT.csv', index=False)
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrix_TFIDF_RF_SENT.csv', index=False)
+
+print(' ------------------------------------ ')
+
+print(' ------------------------------------ ')
+
+# Decision Tree TD-IDF with different parameters such as max_depth, min_samples_split, min_samples_leaf, etc.
+
+# Load sentiments dataset
+
+print('Load sentiments dataset:')
+df = pd.read_csv('sentiments.csv')
+
+# Sentiment Analysis
+print('Sentiment Analysis:')
+# Take a small sample of the data
+print('Take a small sample of the data:')
+df_sample = df.sample(n=1000, random_state=42)
+
+# TF-IDF
+print('TF-IDF Text Vectorizer:')
+tfidf_vectorizer = TfidfVectorizer(max_features=1000)
+
+tfidf_vectorizer.fit(df_sample['title'])
+X_text = tfidf_vectorizer.transform(df_sample['title'])
+
+# Include the sentiment scores
+print('Including the sentiment scores:')
+X_sentiment = df_sample['sentiment'].values.reshape(-1, 1)
+X = np.concatenate((X_text.toarray(), X_sentiment), axis=1)
+
+# Prepare data for sentiment analysis
+print('Prepare data for sentiment analysis:')
+X_train, X_test, y_train, y_test = train_test_split(X, df_sample['target'], test_size=0.2, random_state=42)
+
+# Train the model
+print('Train the model:')
+model = DecisionTreeClassifier(max_depth=10, min_samples_split=2, min_samples_leaf=1)
+model.fit(X_train, y_train)
+
+# Predict the labels
+print('Predict the labels:')
+y_pred_binary = model.predict(X_test)
+print('Print the predicted labels:')
+print(y_pred_binary)
+
+# Evaluate the model
+print('Evaluate the model:')
+print('Accuracy:')
+print(accuracy_score(y_test, y_pred_binary))
+print('Precision, Recall, F1-Score:')
+print(precision_recall_fscore_support(y_test, y_pred_binary, average='macro'))
+print('Confusion Matrix:')
+print(confusion_matrix(y_test, y_pred_binary))
+print('Classification Report:')
+print(classification_report(y_test, y_pred_binary))
+print('Mean Squared Error:')
+print(mean_squared_error(y_test, y_pred_binary))
+print('Mean Absolute Error:')
+print(mean_absolute_error(y_test, y_pred_binary))
+print('R2 Score:')
+print(r2_score(y_test, y_pred_binary))
+print('Explained Variance Score:')
+print(explained_variance_score(y_test, y_pred_binary))
+
+# Save classification report to csv file |W|
+print('Save classification report to csv file:')
+report = classification_report(y_test, y_pred_binary, output_dict=True)
+df_report = pd.DataFrame(report).transpose()
+df_report.to_csv('class_report_TFIDF_DT_SENT_PARA.csv', index=False)
+
+# Save confusion matrix to csv file |W|
+print('Save confusion matrix to csv file:')
+df_confusion_matrix = pd.DataFrame(confusion_matrix(y_test, y_pred_binary))
+df_confusion_matrix.to_csv('confusion_matrix_TFIDF_DT_SENT_PARA.csv', index=False)
+
+
 
 '''
 READ ME

@@ -60,4 +60,5 @@ This project uses the following license: [???]()
 ## Results
 [Google Docs](https://docs.google.com/document/d/1Rf7G1WZkF790eJOV7jMW7pRI0JtxPSj-/edit?usp=sharing&ouid=116349938659091109085&rtpof=true&sd=true)
 
+([One Drive With Data](https://1drv.ms/u/s!Aug4X2KlVjHyhNR-ACo28OICbHiK7A?e=gLkIRj))
 **Note**: Please consult the latest and most authoritative health sources like the World Health Organization or the Centers for Disease Control and Prevention for current, scientifically-validated information about COVID-19.

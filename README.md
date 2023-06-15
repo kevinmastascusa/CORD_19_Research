@@ -56,6 +56,8 @@ This project uses the following license: [???]()
 * Who I am: I am a student at Drexel University studying Data Science and Artificial Intelligence.
 * LinkedIn: https://www.linkedin.com/in/kevinmastascusa/
 * Github: https://github.com/kevinmastascusa
-#This site was built using [GitHub Pages](https://pages.github.com/).
+
+## Results
+[]()
 
 **Note**: Please consult the latest and most authoritative health sources like the World Health Organization or the Centers for Disease Control and Prevention for current, scientifically-validated information about COVID-19.
